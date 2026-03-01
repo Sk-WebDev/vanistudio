@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Lumière Studio — Professional Wedding & Occasion Photography in Bengaluru, India." />
+  <title>Lumière Studio — Wedding & Occasion Photography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Serif+Tamil:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --blush: #f9e8e8;
+      --blush-dark: #f2d1d1;
+      --rose: #c9808a;
+      --rose-deep: #a85d67;
+      --ivory: #fdf8f5;
+      --charcoal: #2c2324;
+      --muted: #7a6a6b;
+      --gold: #c9a96e;
+      --white: #ffffff;
+      --section-gap: 110px;
+      --navbar-h: 72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--navbar-h); }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--ivory);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* Tamil font override — no letter-spacing/text-transform in Tamil */
+    html[lang="ta"] body,
+    html[lang="ta"] p,
+    html[lang="ta"] h1, html[lang="ta"] h2, html[lang="ta"] h3,
+    html[lang="ta"] h4, html[lang="ta"] h5, html[lang="ta"] h6,
+    html[lang="ta"] span, html[lang="ta"] a, html[lang="ta"] label,
+    html[lang="ta"] button, html[lang="ta"] input,
+    html[lang="ta"] textarea, html[lang="ta"] select, html[lang="ta"] li {
+      font-family: 'Noto Serif Tamil', serif;
+      letter-spacing: 0 !important;
+      text-transform: none !important;
+    }
+
+    /* Custom Cursor — desktop (pointer:fine) only */
+    @media (pointer: fine) {
+      body { cursor: none; }
+      a, button { cursor: none; }
+      .cursor {
+        width: 10px; height: 10px; background: var(--rose); border-radius: 50%;
+        position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+        transform: translate(-50%,-50%);
+        transition: width .3s, height .3s, background .3s;
+      }
+      .cursor-ring {
+        width: 36px; height: 36px; border: 1.5px solid var(--rose); border-radius: 50%;
+        position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
+        transform: translate(-50%,-50%);
+        transition: width .3s, height .3s, opacity .3s;
+        opacity: .6;
+      }
+      body:has(a:hover) .cursor  { width: 16px; height: 16px; background: var(--rose-deep); }
+      body:has(a:hover) .cursor-ring { width: 50px; height: 50px; opacity: .3; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--ivory); }
+    ::-webkit-scrollbar-thumb { background: var(--blush-dark); border-radius: 4px; }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      height: var(--navbar-h);
+      background: transparent;
+      transition: background .4s, box-shadow .4s;
+    }
+    .navbar.scrolled {
+      background: rgba(253,248,245,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 30px rgba(44,35,36,.07);
+    }
+    /* Force the inner container to be a flex row */
+    .navbar > .container {
+      height: 100%;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .navbar-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem; font-weight: 600;
+      color: var(--charcoal) !important;
+      letter-spacing: .04em;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .navbar-brand span { color: var(--rose); }
+
+    /* Desktop nav — horizontal list */
+    .nav-list {
+      display: flex; flex-direction: row;
+      align-items: center; gap: 0;
+      list-style: none; padding: 0; margin: 0 0 0 auto;
+    }
+    .nav-list .nav-link {
+      font-family: 'Jost', sans-serif;
+      font-size: .8rem; font-weight: 400;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--charcoal) !important;
+      padding: 0 14px !important;
+      position: relative; white-space: nowrap;
+      transition: color .3s;
+    }
+    .nav-list .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 50%;
+      width: 0; height: 1px; background: var(--rose);
+      transform: translateX(-50%); transition: width .3s;
+    }
+    .nav-list .nav-link:hover::after,
+    .nav-list .nav-link.active::after { width: 60%; }
+    .nav-list .nav-link:hover { color: var(--rose) !important; }
+
+    /* Language switcher */
+    .lang-switcher {
+      display: flex; border: 1px solid var(--blush-dark);
+      overflow: hidden; flex-shrink: 0; margin-left: 16px;
+    }
+    .lang-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 7px 12px; background: transparent; border: none;
+      color: var(--muted); transition: background .25s, color .25s;
+      white-space: nowrap;
+    }
+    .lang-btn.active { background: var(--rose); color: var(--white); }
+    .lang-btn:hover:not(.active) { background: var(--blush); color: var(--charcoal); }
+
+    /* Book-now button */
+    .btn-nav-book {
+      font-family: 'Jost', sans-serif;
+      font-size: .74rem; font-weight: 400;
+      letter-spacing: .14em; text-transform: uppercase;
+      padding: 10px 20px;
+      background: var(--charcoal); color: var(--white) !important;
+      border: none; border-radius: 0;
+      text-decoration: none; white-space: nowrap;
+      flex-shrink: 0; margin-left: 14px;
+      position: relative; overflow: hidden;
+      display: inline-block;
+    }
+    .btn-nav-book::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--rose); transform: translateX(-101%);
+      transition: transform .3s ease;
+    }
+    .btn-nav-book span { position: relative; z-index: 1; }
+    .btn-nav-book:hover::before { transform: translateX(0); }
+
+    /* Hamburger (mobile) */
+    .hamburger-btn {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; padding: 4px;
+      margin-left: auto; flex-shrink: 0; z-index: 1100;
+    }
+    .hamburger-btn span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--charcoal); transition: transform .3s, opacity .3s;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile vertical drawer */
+    .mobile-drawer {
+      position: fixed;
+      top: var(--navbar-h); left: 0; right: 0;
+      background: rgba(253,248,245,.98);
+      backdrop-filter: blur(14px);
+      z-index: 999;
+      display: flex; flex-direction: column;
+      padding: 16px 24px 28px;
+      transform: translateY(-8px); opacity: 0;
+      pointer-events: none;
+      transition: transform .35s ease, opacity .35s ease;
+      box-shadow: 0 10px 40px rgba(44,35,36,.1);
+    }
+    .mobile-drawer.open {
+      transform: translateY(0); opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-drawer a {
+      font-family: 'Jost', sans-serif;
+      font-size: .95rem; font-weight: 400;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--charcoal); padding: 13px 0;
+      border-bottom: 1px solid var(--blush-dark);
+      text-decoration: none;
+      transition: color .3s, padding-left .3s;
+    }
+    html[lang="ta"] .mobile-drawer a { letter-spacing: 0 !important; text-transform: none !important; }
+    .mobile-drawer a:hover { color: var(--rose); padding-left: 8px; }
+    .mobile-drawer a:last-of-type { border-bottom: none; }
+    .mobile-drawer .lang-switcher { margin-top: 20px; align-self: flex-start; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      background: var(--ivory);
+      padding-top: var(--navbar-h);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 40%, rgba(249,232,232,.7) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(201,168,176,.18) 0%, transparent 60%);
+    }
+    .hero-petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .petal {
+      position: absolute; background: rgba(201,128,138,.18);
+      border-radius: 50% 0 50% 0; animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: .4; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow {
+      font-size: .75rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--rose); opacity:.6; }
+    h1.hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem,7vw,6.4rem);
+      font-weight: 300; line-height: 1.08; color: var(--charcoal);
+    }
+    html[lang="ta"] h1.hero-title { font-size: clamp(2rem,5vw,4.2rem); line-height: 1.3; }
+    h1.hero-title em { font-style: italic; color: var(--rose); }
+    .hero-sub { font-size: .9rem; color: var(--muted); line-height: 1.8; max-width: 420px; margin-top: 22px; }
+    .hero-cta { margin-top: 40px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+    .btn-primary-custom {
+      background: var(--charcoal); color: var(--white);
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      padding: 16px 36px; border: none; border-radius: 0;
+      position: relative; overflow: hidden;
+      transition: color .35s; text-decoration: none; display: inline-block;
+    }
+    .btn-primary-custom::before {
+      content:''; position:absolute; inset:0;
+      background:var(--rose); transform:translateX(-101%);
+      transition:transform .35s; z-index:0;
+    }
+    .btn-primary-custom:hover::before { transform:translateX(0); }
+    .btn-primary-custom span { position:relative; z-index:1; color:inherit; }
+    .btn-primary-custom:hover { color:var(--white); }
+
+    .btn-ghost {
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--charcoal); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+      transition: color .3s, gap .3s;
+    }
+    .btn-ghost:hover { color: var(--rose); gap: 16px; }
+    .btn-ghost i { font-size: .7rem; transition: transform .3s; }
+    .btn-ghost:hover i { transform: translateX(4px); }
+
+    .hero-img-wrap { position:relative; margin-left:auto; max-width:480px; }
+    .hero-img-wrap::before {
+      content:''; position:absolute; top:-20px; right:-20px;
+      width:100%; height:100%; border:1px solid rgba(201,128,138,.25); z-index:0;
+    }
+    .hero-img-wrap img { width:100%; aspect-ratio:3/4; object-fit:cover; position:relative; z-index:1; }
+    .hero-badge {
+      position:absolute; bottom:-24px; left:-24px;
+      background:var(--white); padding:18px 22px;
+      box-shadow:0 10px 40px rgba(44,35,36,.1); z-index:2;
+    }
+    .hero-badge .num {
+      font-family:'Cormorant Garamond',serif;
+      font-size:2.4rem; font-weight:300; color:var(--charcoal); line-height:1;
+    }
+    .hero-badge .lbl { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
+    html[lang="ta"] .hero-badge .lbl { letter-spacing:0!important; text-transform:none!important; }
+    .hero-scroll-hint {
+      position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+      animation:bounce 2.2s infinite; z-index:3;
+    }
+    .hero-scroll-hint .line { width:1px; height:40px; background:linear-gradient(to bottom,var(--rose),transparent); }
+    @keyframes bounce {
+      0%,100%{ transform:translateX(-50%) translateY(0); }
+      50%    { transform:translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── SECTION SHARED ─── */
+    .section-label {
+      font-size:.72rem; letter-spacing:.28em; text-transform:uppercase;
+      color:var(--rose); margin-bottom:10px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .section-label::before { content:''; width:28px; height:1px; background:var(--rose); opacity:.7; }
+    h2.section-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2.2rem,4.5vw,3.6rem);
+      font-weight:300; line-height:1.15; color:var(--charcoal);
+    }
+    html[lang="ta"] h2.section-title { font-size:clamp(1.6rem,3.5vw,2.8rem); line-height:1.4; }
+    h2.section-title em { font-style:italic; color:var(--rose); }
+    .section-desc { font-size:.9rem; color:var(--muted); line-height:1.85; max-width:480px; }
+    .divider { width:60px; height:1px; background:linear-gradient(to right,var(--rose),transparent); margin:20px 0; }
+
+    /* ─── ABOUT ─── */
+    #about { padding:var(--section-gap) 0; background:var(--white); }
+    .about-img-stack { position:relative; padding-bottom:60px; padding-right:60px; }
+    .about-img-main { width:100%; aspect-ratio:4/5; object-fit:cover; position:relative; z-index:1; }
+    .about-img-accent { position:absolute; bottom:0; right:0; width:55%; aspect-ratio:1; object-fit:cover; border:5px solid var(--white); z-index:2; }
+    .about-texture { position:absolute; top:-16px; left:-16px; width:90px; height:90px; background-image:radial-gradient(circle,rgba(201,128,138,.35) 1px,transparent 1px); background-size:10px 10px; z-index:0; }
+    .about-stat { text-align:center; padding:24px; }
+    .about-stat .val { font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--charcoal); line-height:1; }
+    .about-stat .val span { color:var(--rose); }
+    .about-stat p { font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:6px; }
+    html[lang="ta"] .about-stat p { letter-spacing:0!important; text-transform:none!important; }
+    .stat-divider { width:1px; background:var(--blush-dark); }
+
+    /* ─── SERVICES ─── */
+    #services { padding:var(--section-gap) 0; background:var(--ivory); }
+    .service-card {
+      padding:44px 36px; border:1px solid var(--blush-dark);
+      background:var(--white); position:relative; overflow:hidden;
+      transition:transform .35s, box-shadow .35s; height:100%;
+    }
+    .service-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(249,232,232,.5) 0%,transparent 60%); opacity:0; transition:opacity .35s; }
+    .service-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(44,35,36,.08); }
+    .service-card:hover::before { opacity:1; }
+    .service-icon { width:52px; height:52px; border:1px solid var(--blush-dark); display:flex; align-items:center; justify-content:center; margin-bottom:24px; color:var(--rose); font-size:1.2rem; transition:background .3s,color .3s; }
+    .service-card:hover .service-icon { background:var(--rose); color:var(--white); border-color:var(--rose); }
+    .service-card h4 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:500; color:var(--charcoal); margin-bottom:12px; }
+    html[lang="ta"] .service-card h4 { font-size:1.2rem; }
+    .service-card p { font-size:.87rem; color:var(--muted); line-height:1.8; }
+    .service-num { position:absolute; top:24px; right:28px; font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:rgba(201,128,138,.1); line-height:1; }
+    .service-price { margin-top:20px; padding-top:18px; border-top:1px solid var(--blush-dark); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--rose); }
+    html[lang="ta"] .service-price { letter-spacing:0!important; text-transform:none!important; }
+
+    /* ─── GALLERY ─── */
+    #gallery { padding:var(--section-gap) 0; background:var(--charcoal); }
+    #gallery .section-label { color:var(--blush-dark); }
+    #gallery .section-label::before { background:var(--blush-dark); }
+    #gallery h2.section-title { color:var(--white); }
+    #gallery .section-desc { color:rgba(255,255,255,.5); }
+    .gallery-filter { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:40px; }
+    .filter-btn { font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; padding:9px 22px; border:1px solid rgba(255,255,255,.15); background:transparent; color:rgba(255,255,255,.5); transition:.3s; }
+    .filter-btn.active,.filter-btn:hover { background:var(--rose); border-color:var(--rose); color:var(--white); }
+    html[lang="ta"] .filter-btn { letter-spacing:0!important; text-transform:none!important; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
+    .g-item { overflow:hidden; position:relative; background:#3a2c2d; }
+    .g-item:nth-child(1) { grid-column:span 5; grid-row:span 2; }
+    .g-item:nth-child(2) { grid-column:span 4; }
+    .g-item:nth-child(3) { grid-column:span 3; }
+    .g-item:nth-child(4) { grid-column:span 4; }
+    .g-item:nth-child(5) { grid-column:span 3; }
+    .g-item:nth-child(6) { grid-column:span 4; grid-row:span 2; }
+    .g-item:nth-child(7) { grid-column:span 4; }
+    .g-item:nth-child(8) { grid-column:span 4; }
+    .g-item img { width:100%; height:100%; object-fit:cover; min-height:200px; transition:transform .6s,filter .6s; filter:saturate(.9) brightness(.95); }
+    .g-item:hover img { transform:scale(1.06); filter:saturate(1.1) brightness(1); }
+    .g-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(44,35,36,.7) 0%,transparent 50%); opacity:0; transition:opacity .4s; display:flex; align-items:flex-end; justify-content:space-between; padding:20px; }
+    .g-item:hover .g-overlay { opacity:1; }
+    .g-label { font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--white); }
+    html[lang="ta"] .g-label { letter-spacing:0!important; text-transform:none!important; }
+    .g-zoom { width:36px; height:36px; border:1px solid rgba(255,255,255,.4); display:flex; align-items:center; justify-content:center; color:var(--white); font-size:.8rem; background:none; transition:background .3s; }
+    .g-zoom:hover { background:var(--rose); border-color:var(--rose); }
+
+    /* Lightbox */
+    .lightbox { position:fixed; inset:0; background:rgba(18,12,12,.96); z-index:9990; display:none; align-items:center; justify-content:center; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; user-select:none; }
+    .lightbox-close { position:absolute; top:24px; right:32px; color:var(--white); font-size:1.6rem; background:none; border:none; transition:color .3s; }
+    .lightbox-close:hover { color:var(--rose); }
+    .lightbox-nav { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.08); border:none; color:var(--white); width:50px; height:50px; font-size:1.1rem; transition:background .3s; }
+    .lightbox-nav:hover { background:var(--rose); }
+    .lb-prev { left:20px; } .lb-next { right:20px; }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { padding:var(--section-gap) 0; background:var(--blush); }
+    .testimonial-card { background:var(--white); padding:44px 40px; position:relative; height:100%; }
+    .testimonial-card::before { content:'\201C'; font-family:'Cormorant Garamond',serif; font-size:8rem; color:var(--blush-dark); position:absolute; top:-10px; left:28px; line-height:1; pointer-events:none; }
+    .testimonial-card p { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-style:italic; color:var(--charcoal); line-height:1.75; position:relative; z-index:1; }
+    html[lang="ta"] .testimonial-card p { font-style:normal; font-size:1rem; }
+    .testimonial-author { margin-top:24px; padding-top:20px; border-top:1px solid var(--blush-dark); display:flex; align-items:center; gap:14px; }
+    .t-avatar { width:46px; height:46px; border-radius:50%; object-fit:cover; border:2px solid var(--blush-dark); }
+    .t-name { font-size:.88rem; font-weight:500; color:var(--charcoal); }
+    .t-info { font-size:.75rem; color:var(--muted); margin-top:2px; }
+    .t-stars { color:var(--gold); font-size:.8rem; margin-bottom:16px; }
+    .test-nav { display:flex; gap:10px; margin-top:30px; }
+    .test-dot { width:28px; height:2px; background:var(--blush-dark); border:none; padding:0; transition:background .3s,width .3s; }
+    .test-dot.active { background:var(--rose); width:46px; }
+
+    /* ─── PROCESS ─── */
+    #process { padding:var(--section-gap) 0; background:var(--white); }
+    .process-step { display:flex; gap:28px; align-items:flex-start; padding-bottom:44px; position:relative; }
+    .process-step:not(:last-child)::after { content:''; position:absolute; left:25px; top:52px; width:1px; bottom:0; background:linear-gradient(to bottom,var(--blush-dark),transparent); }
+    .step-num { flex-shrink:0; width:50px; height:50px; border:1px solid var(--blush-dark); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--rose); background:var(--white); position:relative; z-index:1; transition:background .3s,color .3s; }
+    .process-step:hover .step-num { background:var(--rose); color:var(--white); border-color:var(--rose); }
+    .step-body h4 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:500; color:var(--charcoal); margin-bottom:8px; }
+    html[lang="ta"] .step-body h4 { font-size:1.15rem; }
+    .step-body p { font-size:.87rem; color:var(--muted); line-height:1.8; }
+
+    /* ─── CONTACT ─── */
+    #contact { padding:var(--section-gap) 0; background:var(--ivory); }
+    .contact-info-item { display:flex; gap:18px; align-items:flex-start; margin-bottom:32px; }
+    .contact-icon { width:46px; height:46px; flex-shrink:0; border:1px solid var(--blush-dark); display:flex; align-items:center; justify-content:center; color:var(--rose); font-size:.95rem; }
+    .contact-info-item h6 { font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+    html[lang="ta"] .contact-info-item h6 { letter-spacing:0!important; text-transform:none!important; }
+    .contact-info-item p { font-size:.92rem; color:var(--charcoal); }
+    .contact-form { background:var(--white); padding:48px 44px; }
+    .form-group { margin-bottom:22px; }
+    .form-group label { font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px; }
+    html[lang="ta"] .form-group label { letter-spacing:0!important; text-transform:none!important; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width:100%; padding:14px 18px; border:1px solid var(--blush-dark);
+      background:var(--ivory); color:var(--charcoal); font-family:inherit;
+      font-size:.9rem; outline:none; border-radius:0; appearance:none;
+      transition:border-color .3s;
+    }
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus { border-color:var(--rose); background:var(--white); }
+    .form-group input.error,.form-group select.error { border-color:var(--rose-deep); }
+    .form-group .error-msg { font-size:.72rem; color:var(--rose-deep); margin-top:5px; display:none; }
+    .form-group.has-error .error-msg { display:block; }
+    .form-group textarea { resize:vertical; min-height:120px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .form-success { display:none; text-align:center; padding:40px 20px; }
+    .form-success i { font-size:2.2rem; color:var(--rose); margin-bottom:14px; display:block; }
+    .social-links { display:flex; gap:10px; margin-top:20px; }
+    .social-link { width:38px; height:38px; border:1px solid var(--blush-dark); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:.85rem; text-decoration:none; transition:.3s; }
+    .social-link:hover { background:var(--rose); border-color:var(--rose); color:var(--white); }
+
+    /* ─── FOOTER ─── */
+    footer { background:var(--charcoal); padding:60px 0 28px; color:rgba(255,255,255,.55); }
+    .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--white); margin-bottom:14px; }
+    .footer-brand span { color:var(--rose); }
+    .footer-tagline { font-size:.83rem; line-height:1.7; max-width:280px; }
+    footer h6 { font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--white); margin-bottom:20px; }
+    html[lang="ta"] footer h6 { letter-spacing:0!important; text-transform:none!important; }
+    .footer-links { list-style:none; }
+    .footer-links li { margin-bottom:10px; }
+    .footer-links a { font-size:.85rem; color:rgba(255,255,255,.45); text-decoration:none; transition:color .3s; }
+    .footer-links a:hover { color:var(--rose); }
+    .footer-social .social-link { border-color:rgba(255,255,255,.12); color:rgba(255,255,255,.45); }
+    .footer-social .social-link:hover { background:var(--rose); border-color:var(--rose); color:var(--white); }
+    .footer-bottom { margin-top:50px; padding-top:24px; border-top:1px solid rgba(255,255,255,.07); font-size:.75rem; }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal       { opacity:0; transform:translateY(30px); transition:opacity .7s,transform .7s; }
+    .reveal-left  { opacity:0; transform:translateX(-30px); transition:opacity .7s,transform .7s; }
+    .reveal-right { opacity:0; transform:translateX(30px); transition:opacity .7s,transform .7s; }
+    .reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity:1; transform:none; }
+    .delay-1{transition-delay:.15s} .delay-2{transition-delay:.3s}
+    .delay-3{transition-delay:.45s} .delay-4{transition-delay:.6s}
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      .nav-list .nav-link { padding: 0 10px !important; font-size: .74rem; }
+      .btn-nav-book { padding: 9px 14px; font-size: .7rem; }
+    }
+    @media (max-width: 991px) {
+      .nav-list, .btn-nav-book, .lang-switcher.desktop-lang { display: none !important; }
+      .hamburger-btn { display: flex; }
+      .hero-img-wrap { max-width:380px; margin:0 auto; }
+      .about-img-stack { padding-bottom:40px; padding-right:40px; }
+      .gallery-grid { grid-template-columns:1fr 1fr 1fr; }
+      .g-item:nth-child(n) { grid-column:span 1 !important; grid-row:span 1 !important; }
+      .g-item:nth-child(1) { grid-column:span 2 !important; }
+      .g-item:nth-child(6) { grid-column:span 2 !important; }
+      .form-row { grid-template-columns:1fr; }
+    }
+    @media (max-width: 767px) {
+      :root { --section-gap:70px; }
+      .contact-form { padding:28px 20px; }
+      .service-card { padding:28px 20px; }
+      .gallery-grid { grid-template-columns:1fr 1fr; }
+      .g-item:nth-child(n) { grid-column:span 1 !important; grid-row:span 1 !important; }
+      .g-item:nth-child(1) { grid-column:span 2 !important; }
+      .g-item:nth-child(6) { grid-column:span 2 !important; }
+      .hero-badge { bottom:-14px; left:-8px; padding:12px 16px; }
+      .hero-badge .num { font-size:1.8rem; }
+      .testimonial-card { padding:28px 20px; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns:1fr; }
+      .g-item:nth-child(n) { grid-column:span 1 !important; }
+      .hero-img-wrap::before { display:none; }
+    }
+    @media (min-width: 1400px) { .hero-img-wrap { max-width:540px; } }
+    @media (min-width: 2000px) { :root { --section-gap:150px; } body { font-size:110%; } }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lbClose" aria-label="Close"><i class="fa fa-times"></i></button>
+    <button class="lightbox-nav lb-prev" id="lbPrev" aria-label="Previous"><i class="fa fa-chevron-left"></i></button>
+    <img src="" id="lbImg" alt="" />
+    <button class="lightbox-nav lb-next" id="lbNext" aria-label="Next"><i class="fa fa-chevron-right"></i></button>
+  </div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="container">
+      <a class="navbar-brand" href="#hero">Lumière<span>.</span></a>
+
+      <!-- Desktop: horizontal links -->
+      <ul class="nav-list">
+        <li><a class="nav-link" href="#about"        data-i18n="nav_about">About</a></li>
+        <li><a class="nav-link" href="#services"     data-i18n="nav_services">Services</a></li>
+        <li><a class="nav-link" href="#gallery"      data-i18n="nav_gallery">Gallery</a></li>
+        <li><a class="nav-link" href="#testimonials" data-i18n="nav_stories">Stories</a></li>
+        <li><a class="nav-link" href="#process"      data-i18n="nav_process">Process</a></li>
+        <li><a class="nav-link" href="#contact"      data-i18n="nav_contact">Contact</a></li>
+      </ul>
+
+      <!-- Language switcher — desktop -->
+      <div class="lang-switcher desktop-lang" role="group" aria-label="Language">
+        <button class="lang-btn active" id="btnEN"  onclick="setLang('en')" aria-pressed="true">EN</button>
+        <button class="lang-btn"        id="btnTA"  onclick="setLang('ta')" aria-pressed="false">தமிழ்</button>
+      </div>
+
+      <!-- Book Now — desktop -->
+      <a href="#contact" class="btn-nav-book">
+        <span data-i18n="nav_book">Book Now</span>
+      </a>
+
+      <!-- Hamburger — mobile -->
+      <button class="hamburger-btn" id="hamburgerBtn"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile vertical drawer -->
+  <nav class="mobile-drawer" id="mobileDrawer" aria-label="Mobile navigation">
+    <a href="#about"        data-i18n="nav_about"    onclick="closeDrawer()">About</a>
+    <a href="#services"     data-i18n="nav_services" onclick="closeDrawer()">Services</a>
+    <a href="#gallery"      data-i18n="nav_gallery"  onclick="closeDrawer()">Gallery</a>
+    <a href="#testimonials" data-i18n="nav_stories"  onclick="closeDrawer()">Stories</a>
+    <a href="#process"      data-i18n="nav_process"  onclick="closeDrawer()">Process</a>
+    <a href="#contact"      data-i18n="nav_contact"  onclick="closeDrawer()">Contact</a>
+    <div class="lang-switcher" role="group" aria-label="Language">
+      <button class="lang-btn active" id="btnEN_m" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        id="btnTA_m" onclick="setLang('ta')">தமிழ்</button>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-petals" id="petalsContainer" aria-hidden="true"></div>
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 hero-content">
+          <div class="hero-eyebrow" data-i18n="hero_eyebrow">Wedding &amp; Occasion Photography</div>
+          <h1 class="hero-title" data-i18n="hero_title">Every moment<br/>deserves to be <em>timeless.</em></h1>
+          <p class="hero-sub" data-i18n="hero_sub">Capturing the whispers, the laughter, the tears of joy — and everything in between.</p>
+          <div class="hero-cta">
+            <a href="#gallery" class="btn-primary-custom"><span data-i18n="hero_cta1">View Portfolio</span></a>
+            <a href="#contact" class="btn-ghost"><span data-i18n="hero_cta2">Book a Session</span> <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-img-wrap">
+            <img src="https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?w=800&q=80"
+                 alt="Elegant wedding couple" loading="eager"
+                 onerror="this.src='https://placehold.co/480x640/f9e8e8/c9808a?text=Lumière'" />
+            <div class="hero-badge">
+              <div class="num" id="counterYears">0</div>
+              <div class="lbl" data-i18n="hero_badge">Years of Experience</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="line"></div><span data-i18n="scroll_hint">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 reveal-left">
+          <div class="about-img-stack">
+            <div class="about-texture" aria-hidden="true"></div>
+            <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=700&q=80"
+                 alt="Photographer at work" class="about-img-main" loading="lazy"
+                 onerror="this.src='https://placehold.co/500x625/f9e8e8/c9808a?text=Photo'" />
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&q=80"
+                 alt="Wedding detail" class="about-img-accent" loading="lazy"
+                 onerror="this.src='https://placehold.co/250x250/f2d1d1/c9808a?text=Detail'" />
+          </div>
+        </div>
+        <div class="col-lg-6 offset-lg-1 reveal-right">
+          <div class="section-label" data-i18n="about_label">About the Artist</div>
+          <h2 class="section-title" data-i18n="about_title">Turning fleeting moments into <em>forever.</em></h2>
+          <div class="divider"></div>
+          <p class="section-desc mb-3" data-i18n="about_p1">Hi, I'm Arjun Sharma — a wedding and occasion photographer based in Bengaluru, India.</p>
+          <p class="section-desc mb-4" data-i18n="about_p2">With over a decade of experience across weddings, engagements, and cultural celebrations, I bring technical precision and emotional sensitivity to every frame.</p>
+          <a href="#contact" class="btn-ghost"><span data-i18n="about_cta">Let's Work Together</span> <i class="fa fa-arrow-right"></i></a>
+          <div class="row mt-5 align-items-center">
+            <div class="col about-stat">
+              <div class="val" id="stat1v">12<span>+</span></div>
+              <p data-i18n="stat_years">Years Experience</p>
+            </div>
+            <div class="stat-divider d-none d-sm-block" style="height:60px"></div>
+            <div class="col about-stat">
+              <div class="val" id="stat2v">500<span>+</span></div>
+              <p data-i18n="stat_weddings">Weddings Shot</p>
+            </div>
+            <div class="stat-divider d-none d-sm-block" style="height:60px"></div>
+            <div class="col about-stat">
+              <div class="val" id="stat3v">20<span>+</span></div>
+              <p data-i18n="stat_awards">Awards Won</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICES ═══ -->
+  <section id="services">
+    <div class="container">
+      <div class="row mb-5 reveal">
+        <div class="col-lg-6">
+          <div class="section-label" data-i18n="svc_label">What We Offer</div>
+          <h2 class="section-title" data-i18n="svc_title">Crafted for your <em>special day.</em></h2>
+        </div>
+        <div class="col-lg-5 offset-lg-1 d-flex align-items-end">
+          <p class="section-desc" data-i18n="svc_desc">From intimate elopements to grand celebrations — tailored to tell your story perfectly.</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4 reveal delay-1"><div class="service-card"><div class="service-num">01</div><div class="service-icon"><i class="fa fa-heart"></i></div><h4 data-i18n="svc1_title">Wedding Photography</h4><p data-i18n="svc1_desc">Full-day coverage from getting ready to the first dance. Every emotion, every laugh, every tear.</p><div class="service-price" data-i18n="svc1_price">Starting ₹45,000</div></div></div>
+        <div class="col-md-6 col-lg-4 reveal delay-2"><div class="service-card"><div class="service-num">02</div><div class="service-icon"><i class="fa fa-ring"></i></div><h4 data-i18n="svc2_title">Engagement Sessions</h4><p data-i18n="svc2_desc">Pre-wedding shoots at your favourite spots — candid, natural, and deeply personal.</p><div class="service-price" data-i18n="svc2_price">Starting ₹18,000</div></div></div>
+        <div class="col-md-6 col-lg-4 reveal delay-3"><div class="service-card"><div class="service-num">03</div><div class="service-icon"><i class="fa fa-star"></i></div><h4 data-i18n="svc3_title">Cultural Celebrations</h4><p data-i18n="svc3_desc">Mehendi, Haldi, Sangeet, naming ceremonies — rich traditions documented beautifully.</p><div class="service-price" data-i18n="svc3_price">Starting ₹25,000</div></div></div>
+        <div class="col-md-6 col-lg-4 reveal delay-1"><div class="service-card"><div class="service-num">04</div><div class="service-icon"><i class="fa fa-video"></i></div><h4 data-i18n="svc4_title">Cinematic Films</h4><p data-i18n="svc4_desc">Wedding films that play like a love story — scored with music that moves the soul.</p><div class="service-price" data-i18n="svc4_price">Starting ₹60,000</div></div></div>
+        <div class="col-md-6 col-lg-4 reveal delay-2"><div class="service-card"><div class="service-num">05</div><div class="service-icon"><i class="fa fa-book-open"></i></div><h4 data-i18n="svc5_title">Photo Albums</h4><p data-i18n="svc5_desc">Heirloom-quality albums handcrafted in Italy — passed down through generations.</p><div class="service-price" data-i18n="svc5_price">Starting ₹12,000</div></div></div>
+        <div class="col-md-6 col-lg-4 reveal delay-3"><div class="service-card"><div class="service-num">06</div><div class="service-icon"><i class="fa fa-camera"></i></div><h4 data-i18n="svc6_title">Portrait Sessions</h4><p data-i18n="svc6_desc">Intimate family or individual portraits — beautifully lit and genuinely emotional.</p><div class="service-price" data-i18n="svc6_price">Starting ₹10,000</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section id="gallery">
+    <div class="container">
+      <div class="row mb-5 reveal">
+        <div class="col-lg-6">
+          <div class="section-label" data-i18n="gal_label">Portfolio</div>
+          <h2 class="section-title" data-i18n="gal_title">Stories told in <em>light.</em></h2>
+        </div>
+        <div class="col-lg-5 offset-lg-1 d-flex align-items-end">
+          <p class="section-desc" data-i18n="gal_desc">Real couples, real emotions, real magic.</p>
+        </div>
+      </div>
+      <div class="gallery-filter reveal" role="group" aria-label="Filter gallery">
+        <button class="filter-btn active" data-filter="all"        data-i18n="gf_all">All</button>
+        <button class="filter-btn"        data-filter="wedding"    data-i18n="gf_wedding">Wedding</button>
+        <button class="filter-btn"        data-filter="engagement" data-i18n="gf_engagement">Engagement</button>
+        <button class="filter-btn"        data-filter="cultural"   data-i18n="gf_cultural">Cultural</button>
+        <button class="filter-btn"        data-filter="portrait"   data-i18n="gf_portrait">Portrait</button>
+      </div>
+      <div class="gallery-grid" id="galleryGrid" role="list"></div>
+      <div class="text-center mt-5 reveal">
+        <a href="#contact" class="btn-primary-custom"><span data-i18n="gal_cta">See More Work →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <div class="section-label" style="justify-content:center" data-i18n="test_label">Client Stories</div>
+        <h2 class="section-title" data-i18n="test_title">Moments they'll <em>never forget.</em></h2>
+      </div>
+      <div class="row g-4" id="testimonialsGrid"></div>
+      <div class="d-flex justify-content-center"><div class="test-nav" id="testNav"></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ PROCESS ═══ -->
+  <section id="process">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 reveal">
+          <div class="section-label" data-i18n="proc_label">How It Works</div>
+          <h2 class="section-title" data-i18n="proc_title">A seamless journey from <em>hello</em> to forever.</h2>
+          <div class="divider"></div>
+          <p class="section-desc" data-i18n="proc_desc">We believe the photography experience should be as beautiful as the photos themselves.</p>
+        </div>
+        <div class="col-lg-6 offset-lg-1 mt-5 mt-lg-0">
+          <div class="process-step reveal delay-1"><div class="step-num">01</div><div class="step-body"><h4 data-i18n="step1_title">Discovery Call</h4><p data-i18n="step1_desc">A relaxed conversation to understand your vision, style, and what makes your day unique.</p></div></div>
+          <div class="process-step reveal delay-2"><div class="step-num">02</div><div class="step-body"><h4 data-i18n="step2_title">Custom Proposal</h4><p data-i18n="step2_desc">A personalised package and timeline tailored exactly to your event and preferences.</p></div></div>
+          <div class="process-step reveal delay-3"><div class="step-num">03</div><div class="step-body"><h4 data-i18n="step3_title">The Big Day</h4><p data-i18n="step3_desc">We arrive early, blend in, and capture every emotion as it unfolds — naturally and beautifully.</p></div></div>
+          <div class="process-step reveal delay-4"><div class="step-num">04</div><div class="step-body"><h4 data-i18n="step4_title">Delivery &amp; Memories</h4><p data-i18n="step4_desc">Within 3–4 weeks, your fully edited gallery is delivered in a beautiful online portal.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-5 reveal-left">
+          <div class="section-label" data-i18n="contact_label">Get In Touch</div>
+          <h2 class="section-title" data-i18n="contact_title">Let's capture your <em>story.</em></h2>
+          <div class="divider"></div>
+          <p class="section-desc mb-5" data-i18n="contact_desc">Dates fill up fast. Reach out early to check availability for your special day.</p>
+          <div class="contact-info-item"><div class="contact-icon"><i class="fa fa-phone"></i></div><div><h6 data-i18n="ci_phone_label">Call / WhatsApp</h6><p>+91 98765 43210</p></div></div>
+          <div class="contact-info-item"><div class="contact-icon"><i class="fa fa-envelope"></i></div><div><h6 data-i18n="ci_email_label">Email</h6><p>hello@lumierephoto.in</p></div></div>
+          <div class="contact-info-item"><div class="contact-icon"><i class="fa fa-map-pin"></i></div><div><h6 data-i18n="ci_loc_label">Based in</h6><p>Bengaluru, Karnataka<br/><small style="color:var(--muted)" data-i18n="ci_loc_sub">Available pan-India &amp; internationally</small></p></div></div>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-6 offset-lg-1 reveal-right">
+          <div class="contact-form">
+            <div id="formContent">
+              <div class="form-row">
+                <div class="form-group" id="fg_fname">
+                  <label for="fname" data-i18n="cf_fname">First Name *</label>
+                  <input type="text" id="fname" autocomplete="given-name" />
+                  <div class="error-msg" data-i18n="cf_fname_err">Please enter your first name.</div>
+                </div>
+                <div class="form-group" id="fg_lname">
+                  <label for="lname" data-i18n="cf_lname">Last Name *</label>
+                  <input type="text" id="lname" autocomplete="family-name" />
+                  <div class="error-msg" data-i18n="cf_lname_err">Please enter your last name.</div>
+                </div>
+              </div>
+              <div class="form-group" id="fg_email">
+                <label for="email" data-i18n="cf_email">Email Address *</label>
+                <input type="email" id="email" autocomplete="email" />
+                <div class="error-msg" data-i18n="cf_email_err">Please enter a valid email address.</div>
+              </div>
+              <div class="form-group">
+                <label for="phone" data-i18n="cf_phone">Phone / WhatsApp</label>
+                <input type="tel" id="phone" autocomplete="tel" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="service" data-i18n="cf_service">Service</label>
+                  <select id="service">
+                    <option value="" data-i18n="cf_svc_placeholder">Select a service</option>
+                    <option value="wedding"    data-i18n="svc1_title">Wedding Photography</option>
+                    <option value="engagement" data-i18n="svc2_title">Engagement Session</option>
+                    <option value="cultural"   data-i18n="svc3_title">Cultural Celebrations</option>
+                    <option value="film"       data-i18n="svc4_title">Cinematic Film</option>
+                    <option value="album"      data-i18n="svc5_title">Photo Album</option>
+                    <option value="portrait"   data-i18n="svc6_title">Portrait Session</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="evdate" data-i18n="cf_date">Event Date</label>
+                  <input type="date" id="evdate" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="message" data-i18n="cf_msg">Tell me about your day</label>
+                <textarea id="message"></textarea>
+              </div>
+              <button type="button" class="btn-primary-custom w-100" onclick="submitForm()" style="text-align:center;">
+                <span data-i18n="cf_submit">Send Message</span>
+              </button>
+            </div>
+            <div class="form-success" id="formSuccess" role="alert" aria-live="polite">
+              <i class="fa fa-heart"></i>
+              <h4 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--charcoal)" data-i18n="cf_thanks">Thank you!</h4>
+              <p style="color:var(--muted);margin-top:10px" data-i18n="cf_thanks_msg">Your message has been received. I'll get back to you within 24 hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="container">
+      <div class="row g-5 mb-5">
+        <div class="col-lg-4">
+          <div class="footer-brand">Lumière<span>.</span></div>
+          <p class="footer-tagline" data-i18n="footer_tagline">Capturing the beauty of love and life — one frame at a time.</p>
+          <div class="social-links footer-social mt-3">
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2 offset-lg-1">
+          <h6 data-i18n="footer_nav">Navigate</h6>
+          <ul class="footer-links">
+            <li><a href="#about"        data-i18n="nav_about">About</a></li>
+            <li><a href="#services"     data-i18n="nav_services">Services</a></li>
+            <li><a href="#gallery"      data-i18n="nav_gallery">Gallery</a></li>
+            <li><a href="#testimonials" data-i18n="nav_stories">Stories</a></li>
+            <li><a href="#process"      data-i18n="nav_process">Process</a></li>
+            <li><a href="#contact"      data-i18n="nav_contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6 data-i18n="footer_svc">Services</h6>
+          <ul class="footer-links">
+            <li><a href="#services" data-i18n="svc1_title">Weddings</a></li>
+            <li><a href="#services" data-i18n="svc2_title">Engagement</a></li>
+            <li><a href="#services" data-i18n="svc3_title">Cultural Events</a></li>
+            <li><a href="#services" data-i18n="svc4_title">Films</a></li>
+            <li><a href="#services" data-i18n="svc6_title">Portraits</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <h6 data-i18n="footer_quick">Quick Contact</h6>
+          <p style="font-size:.83rem;line-height:1.9;">
+            📍 Bengaluru, KA<br/>
+            📞 +91 98765 43210<br/>
+            ✉️ hello@lumierephoto.in<br/>
+            🕐 <span data-i18n="footer_hours">Mon–Sat, 10am–7pm IST</span>
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <p data-i18n="footer_copy">© 2025 Lumière Studio. All rights reserved.</p>
+        <div style="display:flex;gap:24px;">
+          <a href="#" style="color:rgba(255,255,255,.35);font-size:.75rem;text-decoration:none;" data-i18n="footer_privacy">Privacy Policy</a>
+          <a href="#" style="color:rgba(255,255,255,.35);font-size:.75rem;text-decoration:none;" data-i18n="footer_terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+  'use strict';
+
+  /* ════════════════════════════
+     TRANSLATIONS
+  ════════════════════════════ */
+  const T = {
+    en: {
+      nav_about:'About', nav_services:'Services', nav_gallery:'Gallery',
+      nav_stories:'Stories', nav_process:'Process', nav_contact:'Contact', nav_book:'Book Now',
+      hero_eyebrow:'Wedding & Occasion Photography',
+      hero_title:'Every moment<br/>deserves to be <em>timeless.</em>',
+      hero_sub:'Capturing the whispers, the laughter, the tears of joy — and everything in between.',
+      hero_cta1:'View Portfolio', hero_cta2:'Book a Session',
+      hero_badge:'Years of Experience', scroll_hint:'Scroll',
+      about_label:'About the Artist',
+      about_title:'Turning fleeting moments into <em>forever.</em>',
+      about_p1:"Hi, I'm Arjun Sharma — a wedding and occasion photographer based in Bengaluru, India. I believe every love story deserves to be told beautifully, honestly, and without missing a single heartbeat.",
+      about_p2:'With a background in fine-art photography and over a decade of experience across weddings, engagements, and cultural celebrations, I bring technical precision and emotional sensitivity to every frame.',
+      about_cta:"Let's Work Together",
+      stat_years:'Years Experience', stat_weddings:'Weddings Shot', stat_awards:'Awards Won',
+      svc_label:'What We Offer', svc_title:'Crafted for your <em>special day.</em>',
+      svc_desc:'From intimate elopements to grand celebrations — tailored to tell your story perfectly.',
+      svc1_title:'Wedding Photography', svc1_desc:'Full-day coverage from getting ready to the first dance. Every emotion, every laugh, every tear.', svc1_price:'Starting ₹45,000',
+      svc2_title:'Engagement Sessions', svc2_desc:'Pre-wedding shoots at your favourite spots — candid, natural, and deeply personal.', svc2_price:'Starting ₹18,000',
+      svc3_title:'Cultural Celebrations', svc3_desc:'Mehendi, Haldi, Sangeet, naming ceremonies — rich traditions documented beautifully.', svc3_price:'Starting ₹25,000',
+      svc4_title:'Cinematic Films', svc4_desc:'Wedding films that play like a love story — scored with music that moves the soul.', svc4_price:'Starting ₹60,000',
+      svc5_title:'Photo Albums', svc5_desc:'Heirloom-quality albums handcrafted in Italy — passed down through generations.', svc5_price:'Starting ₹12,000',
+      svc6_title:'Portrait Sessions', svc6_desc:'Intimate family or individual portraits — beautifully lit and genuinely emotional.', svc6_price:'Starting ₹10,000',
+      gal_label:'Portfolio', gal_title:'Stories told in <em>light.</em>', gal_desc:'Real couples, real emotions, real magic.',
+      gal_cta:'See More Work →',
+      gf_all:'All', gf_wedding:'Wedding', gf_engagement:'Engagement', gf_cultural:'Cultural', gf_portrait:'Portrait',
+      gl_wedding:'Wedding', gl_engagement:'Engagement', gl_cultural:'Cultural', gl_portrait:'Portrait',
+      test_label:'Client Stories', test_title:"Moments they'll <em>never forget.</em>",
+      test0_text:"Arjun has an extraordinary gift for capturing the in-between moments. Our wedding album makes us cry happy tears every time.",
+      test0_name:'Priya & Rahul', test0_info:'Wedding — Bangalore Palace Grounds',
+      test1_text:"We were nervous in front of the camera, but Arjun put us completely at ease. The engagement photos are ethereal.",
+      test1_name:'Ananya & Vikram', test1_info:'Engagement — Coorg, Karnataka',
+      test2_text:"The cinematic film still gives me goosebumps. Every frame is pure art. We'll be recommending Lumière to every couple.",
+      test2_name:'Shreya & Aditya', test2_info:'Wedding Film — Udaipur, Rajasthan',
+      proc_label:'How It Works', proc_title:'A seamless journey from <em>hello</em> to forever.',
+      proc_desc:"We believe the photography experience should be as beautiful as the photos themselves.",
+      step1_title:'Discovery Call', step1_desc:'A relaxed conversation to understand your vision, style, and what makes your day unique.',
+      step2_title:'Custom Proposal', step2_desc:'A personalised package and timeline tailored exactly to your event and preferences.',
+      step3_title:'The Big Day', step3_desc:'We arrive early, blend in, and capture every emotion naturally and beautifully.',
+      step4_title:'Delivery & Memories', step4_desc:'Within 3–4 weeks your fully edited gallery is delivered in a beautiful online portal.',
+      contact_label:'Get In Touch', contact_title:"Let's capture your <em>story.</em>",
+      contact_desc:"Dates fill up fast. Reach out early to check availability for your special day.",
+      ci_phone_label:'Call / WhatsApp', ci_email_label:'Email', ci_loc_label:'Based in',
+      ci_loc_sub:'Available pan-India & internationally',
+      cf_fname:'First Name *', cf_fname_err:'Please enter your first name.',
+      cf_lname:'Last Name *',  cf_lname_err:'Please enter your last name.',
+      cf_email:'Email Address *', cf_email_err:'Please enter a valid email address.',
+      cf_phone:'Phone / WhatsApp', cf_service:'Service', cf_svc_placeholder:'Select a service',
+      cf_date:'Event Date', cf_msg:'Tell me about your day',
+      cf_submit:'Send Message', cf_thanks:'Thank you!',
+      cf_thanks_msg:"Your message has been received. I'll get back to you within 24 hours.",
+      footer_tagline:'Capturing the beauty of love and life — one frame at a time.',
+      footer_nav:'Navigate', footer_svc:'Services', footer_quick:'Quick Contact',
+      footer_hours:'Mon–Sat, 10am–7pm IST',
+      footer_copy:'© 2025 Lumière Studio. All rights reserved.',
+      footer_privacy:'Privacy Policy', footer_terms:'Terms of Service',
+    },
+    ta: {
+      nav_about:'எங்களை பற்றி', nav_services:'சேவைகள்', nav_gallery:'படத்தொகுப்பு',
+      nav_stories:'கதைகள்', nav_process:'செயல்முறை', nav_contact:'தொடர்பு', nav_book:'இப்போதே பதிவு செய்யுங்கள்',
+      hero_eyebrow:'திருமண & நிகழ்வு புகைப்படக்கலை',
+      hero_title:'ஒவ்வொரு தருணமும்<br/><em>என்றென்றும்</em> நிலைக்கட்டும்.',
+      hero_sub:'சிரிப்பு, கண்ணீர், மகிழ்ச்சி — அனைத்தையும் ஒளியில் பதிவு செய்கிறோம்.',
+      hero_cta1:'படத்தொகுப்பு காண்க', hero_cta2:'சேஷன் பதிவு செய்யுங்கள்',
+      hero_badge:'ஆண்டுகள் அனுபவம்', scroll_hint:'கீழே',
+      about_label:'கலைஞரைப் பற்றி',
+      about_title:'நினைவுகளை <em>என்றும்</em> வாழ வைக்கிறோம்.',
+      about_p1:'வணக்கம், நான் அர்ஜுன் சர்மா — பெங்களூருவில் உள்ள திருமண புகைப்படக் கலைஞன். ஒவ்வொரு காதல் கதையும் அழகாக, நேர்மையாக சொல்லப்பட வேண்டும் என்று நம்புகிறேன்.',
+      about_p2:'நுண்கலை புகைப்படத்தில் பின்னணி கொண்டு, திருமணங்கள், நிச்சயதார்த்தங்கள், பண்பாட்டு விழாக்களில் பத்தாண்டுகளுக்கும் மேலான அனுபவம்.',
+      about_cta:'ஒன்றாக வேலை செய்வோம்',
+      stat_years:'ஆண்டுகள் அனுபவம்', stat_weddings:'திருமணங்கள்', stat_awards:'விருதுகள்',
+      svc_label:'நாங்கள் வழங்குவது', svc_title:'உங்கள் <em>சிறப்பு நாளுக்காக</em> உருவாக்கப்பட்டது.',
+      svc_desc:'சின்ன விழாவிலிருந்து பெரிய கொண்டாட்டம் வரை — உங்கள் கதையை சொல்ல தனிப்பயன் தொகுப்பு.',
+      svc1_title:'திருமண புகைப்படக்கலை', svc1_desc:'தயாராவதிலிருந்து முதல் நடனம் வரை முழு நாள் பதிவு.', svc1_price:'தொடக்க விலை ₹45,000',
+      svc2_title:'நிச்சயதார்த்த சேஷன்', svc2_desc:'உங்கள் விருப்பமான இடங்களில் இயல்பான, ஆழமான புகைப்படங்கள்.', svc2_price:'தொடக்க விலை ₹18,000',
+      svc3_title:'பண்பாட்டு கொண்டாட்டங்கள்', svc3_desc:'மெஹந்தி, ஹல்தி, சங்கீத் — அனைத்து மரபுகளையும் அழகாக பதிவு செய்கிறோம்.', svc3_price:'தொடக்க விலை ₹25,000',
+      svc4_title:'சினிமாடிக் திரைப்படங்கள்', svc4_desc:'காதல் கதை போல் ஓடும் திருமண திரைப்படங்கள்.', svc4_price:'தொடக்க விலை ₹60,000',
+      svc5_title:'புகைப்பட ஆல்பங்கள்', svc5_desc:'தலைமுறைகளுக்கு பரிசளிக்கும் தரமான கைவினை ஆல்பங்கள்.', svc5_price:'தொடக்க விலை ₹12,000',
+      svc6_title:'போர்ட்ரெய்ட் சேஷன்', svc6_desc:'குடும்பம் அல்லது தனிப்பட்ட போர்ட்ரெய்ட்கள் — உணர்வு நிறைந்தவை.', svc6_price:'தொடக்க விலை ₹10,000',
+      gal_label:'படத்தொகுப்பு', gal_title:'ஒளியில் சொல்லப்பட்ட <em>கதைகள்.</em>', gal_desc:'உண்மையான தம்பதிகள், உண்மையான உணர்வுகள்.',
+      gal_cta:'மேலும் படங்கள் →',
+      gf_all:'அனைத்தும்', gf_wedding:'திருமணம்', gf_engagement:'நிச்சயதார்த்தம்', gf_cultural:'பண்பாடு', gf_portrait:'போர்ட்ரெய்ட்',
+      gl_wedding:'திருமணம்', gl_engagement:'நிச்சயதார்த்தம்', gl_cultural:'பண்பாடு', gl_portrait:'போர்ட்ரெய்ட்',
+      test_label:'வாடிக்கையாளர் கதைகள்', test_title:'அவர்கள் <em>மறக்காத</em> தருணங்கள்.',
+      test0_text:'அர்ஜுன் என்னுடைய திருமண நினைவுகளை என்றும் அழிக்க முடியாத வகையில் படம் பிடித்தார். ஒவ்வொரு பக்கமும் திறக்கும்போது கண்ணீர் வருகிறது.',
+      test0_name:'பிரியா & ராகுல்', test0_info:'திருமணம் — பெங்களூரு அரண்மனை மைதானம்',
+      test1_text:'கேமராவுக்கு முன் நிற்பதில் கவலையாக இருந்தோம், ஆனால் அர்ஜுன் எங்களை இயல்பாக இருக்க வைத்தார்.',
+      test1_name:'அனன்யா & விக்ரம்', test1_info:'நிச்சயதார்த்தம் — கூர்க், கர்நாடகா',
+      test2_text:'அவர் எடுத்த திரைப்படம் இன்னும் என் மனதை உலுக்குகிறது. Lumièreஐ எல்லாருக்கும் பரிந்துரைப்போம்.',
+      test2_name:'ஸ்ரேயா & ஆதித்யா', test2_info:'திருமண திரைப்படம் — உதய்ப்பூர், ராஜஸ்தான்',
+      proc_label:'எப்படி செயல்படுகிறோம்', proc_title:'<em>வணக்கம்</em> முதல் என்றும் வரை.',
+      proc_desc:'புகைப்படக்கலை அனுபவம் புகைப்படங்களைப் போலவே அழகாக இருக்க வேண்டும்.',
+      step1_title:'கண்டுபிடிப்பு அழைப்பு', step1_desc:'உங்கள் கனவு, பாணி, சிறப்பு விவரங்களை புரிந்துகொள்ள நிதானமான உரையாடல்.',
+      step2_title:'தனிப்பயன் முன்மொழிவு', step2_desc:'உங்கள் நிகழ்வுக்கு ஏற்ற தொகுப்பு மற்றும் காலக்கெடு.',
+      step3_title:'அந்த சிறப்பு நாள்', step3_desc:'நாங்கள் சீக்கிரம் வருவோம், இயல்பாக, அழகாக படம் பிடிப்போம்.',
+      step4_title:'டெலிவரி & நினைவுகள்', step4_desc:'3–4 வாரங்களில் முழுமையாக திருத்தப்பட்ட படத்தொகுப்பு வழங்கப்படும்.',
+      contact_label:'தொடர்பு கொள்ளுங்கள்', contact_title:'உங்கள் <em>கதையை</em> படம் பிடிப்போம்.',
+      contact_desc:'திருமண சீசனில் தேதிகள் விரைவில் நிரம்பிவிடும். முன்கூட்டியே தொடர்பு கொள்ளுங்கள்.',
+      ci_phone_label:'அழைப்பு / வாட்ஸ்ஆப்', ci_email_label:'மின்னஞ்சல்', ci_loc_label:'இருப்பிடம்',
+      ci_loc_sub:'இந்தியா மற்றும் சர்வதேச நிகழ்வுகளுக்கும் வருவோம்',
+      cf_fname:'முதல் பெயர் *', cf_fname_err:'முதல் பெயரை உள்ளிடுங்கள்.',
+      cf_lname:'கடைசி பெயர் *', cf_lname_err:'கடைசி பெயரை உள்ளிடுங்கள்.',
+      cf_email:'மின்னஞ்சல் முகவரி *', cf_email_err:'சரியான மின்னஞ்சல் முகவரியை உள்ளிடுங்கள்.',
+      cf_phone:'தொலைபேசி / வாட்ஸ்ஆப்', cf_service:'சேவை', cf_svc_placeholder:'சேவையை தேர்வு செய்யுங்கள்',
+      cf_date:'நிகழ்வு தேதி', cf_msg:'உங்கள் நாளைப் பற்றி சொல்லுங்கள்',
+      cf_submit:'செய்தி அனுப்புங்கள்', cf_thanks:'நன்றி!',
+      cf_thanks_msg:'உங்கள் செய்தி பெறப்பட்டது. 24 மணி நேரத்தில் திரும்பி தொடர்பு கொள்கிறேன்.',
+      footer_tagline:'காதல் மற்றும் வாழ்க்கையின் அழகை ஒவ்வொரு படத்திலும் பதிவு செய்கிறோம்.',
+      footer_nav:'வழிகாட்டி', footer_svc:'சேவைகள்', footer_quick:'விரைவு தொடர்பு',
+      footer_hours:'திங்கள்–சனி, காலை 10 – மாலை 7 IST',
+      footer_copy:'© 2025 Lumière Studio. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
+      footer_privacy:'தனியுரிமை கொள்கை', footer_terms:'சேவை விதிமுறைகள்',
+    }
+  };
+
+  let lang = 'en';
+
+  function setLang(l) {
+    if (!T[l]) return;
+    lang = l;
+    document.documentElement.lang = l;
+    document.title = l === 'ta'
+      ? 'Lumière Studio — திருமண புகைப்படக்கலை'
+      : 'Lumière Studio — Wedding & Occasion Photography';
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const val = T[l][key];
+      if (val === undefined) return;
+      if (el.tagName === 'OPTION') { el.textContent = val; return; }
+      el.innerHTML = val;
+    });
+
+    // Update lang button states
+    [['btnEN','btnEN_m'], ['btnTA','btnTA_m']].forEach(([d, m], i) => {
+      const active = (i === 0) ? l === 'en' : l === 'ta';
+      [d, m].forEach(id => {
+        const b = document.getElementById(id);
+        if (!b) return;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+    });
+
+    // Re-render dynamic content
+    const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+    renderGallery(activeFilter);
+    renderTestimonials(currentTestPage);
+  }
+
+  /* ════════════════════════════
+     CURSOR (desktop only)
+  ════════════════════════════ */
+  if (window.matchMedia('(pointer: fine)').matches) {
+    const c = document.getElementById('cursor');
+    const cr = document.getElementById('cursorRing');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    (function loop() {
+      rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+      c.style.left  = mx + 'px'; c.style.top  = my + 'px';
+      cr.style.left = rx + 'px'; cr.style.top = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+  }
+
+  /* ════════════════════════════
+     PETALS
+  ════════════════════════════ */
+  const pc = document.getElementById('petalsContainer');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.cssText = `left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*14}s;width:${5+Math.random()*8}px;height:${8+Math.random()*10}px;opacity:${.3+Math.random()*.5}`;
+    pc.appendChild(p);
+  }
+
+  /* ════════════════════════════
+     NAVBAR
+  ════════════════════════════ */
+  const navbar = document.getElementById('navbar');
+  let rafPending = false;
+  window.addEventListener('scroll', () => {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+      document.querySelectorAll('section[id]').forEach(sec => {
+        const top = sec.offsetTop - 90, bottom = top + sec.offsetHeight;
+        document.querySelectorAll(`.nav-list .nav-link[href="#${sec.id}"]`)
+          .forEach(l => l.classList.toggle('active', window.scrollY >= top && window.scrollY < bottom));
+      });
+      rafPending = false;
+    });
+  }, { passive: true });
+
+  /* ════════════════════════════
+     MOBILE DRAWER
+  ════════════════════════════ */
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  let drawerOpen = false;
+
+  function openDrawer() {
+    drawerOpen = true;
+    mobileDrawer.classList.add('open');
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    drawerOpen = false;
+    mobileDrawer.classList.remove('open');
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  }
+  hamburgerBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    drawerOpen ? closeDrawer() : openDrawer();
+  });
+  document.addEventListener('click', e => {
+    if (drawerOpen && !mobileDrawer.contains(e.target) && !hamburgerBtn.contains(e.target)) closeDrawer();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeDrawer(); closeLightbox(); }
+  });
+
+  /* ════════════════════════════
+     SCROLL REVEAL
+  ════════════════════════════ */
+  function observeReveal() {
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); o.unobserve(en.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal:not(.visible),.reveal-left:not(.visible),.reveal-right:not(.visible)')
+      .forEach(el => obs.observe(el));
+  }
+  observeReveal();
+
+  /* ════════════════════════════
+     COUNTER
+  ════════════════════════════ */
+  let counted = false;
+  const counterEl = document.getElementById('counterYears');
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !counted) {
+      counted = true;
+      let s = null;
+      (function step(ts) {
+        if (!s) s = ts;
+        const p = Math.min((ts - s) / 1800, 1);
+        counterEl.textContent = Math.floor(p * 12);
+        if (p < 1) requestAnimationFrame(step); else counterEl.textContent = 12;
+      })(performance.now());
+    }
+  }).observe(counterEl);
+
+  /* ════════════════════════════
+     GALLERY
+  ════════════════════════════ */
+  const galleryData = [
+    { src:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80', lk:'gl_wedding',    cat:'wedding' },
+    { src:'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&q=80', lk:'gl_engagement', cat:'engagement' },
+    { src:'https://images.unsplash.com/photo-1583939411023-14783179e581?w=600&q=80', lk:'gl_cultural',   cat:'cultural' },
+    { src:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80', lk:'gl_portrait',   cat:'portrait' },
+    { src:'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=600&q=80',    lk:'gl_cultural',   cat:'cultural' },
+    { src:'https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?w=600&q=80', lk:'gl_wedding',    cat:'wedding' },
+    { src:'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=600&q=80', lk:'gl_engagement', cat:'engagement' },
+    { src:'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&q=80', lk:'gl_wedding',    cat:'wedding' },
+  ];
+  const galleryGrid = document.getElementById('galleryGrid');
+  let lbImages = [], lbIdx = 0;
+
+  function renderGallery(filter) {
+    const filtered = filter === 'all' ? galleryData : galleryData.filter(i => i.cat === filter);
+    galleryGrid.innerHTML = '';
+    if (!filtered.length) {
+      galleryGrid.innerHTML = '<p style="color:rgba(255,255,255,.4);grid-column:1/-1;text-align:center;padding:40px 0;">No items found.</p>';
+      return;
+    }
+    filtered.forEach((item, idx) => {
+      const label = (T[lang] && T[lang][item.lk]) || item.lk;
+      const el = document.createElement('div');
+      el.className = 'g-item'; el.setAttribute('role','listitem');
+      el.style.cssText = 'opacity:0;transform:scale(.96);transition:opacity .5s ease,transform .5s ease';
+      el.style.transitionDelay = (idx * .06) + 's';
+      el.innerHTML = `
+        <img src="${item.src}" alt="${label} photo" loading="lazy"
+             onerror="this.src='https://placehold.co/400x300/3a2c2d/c9808a?text=${encodeURIComponent(label)}'" />
+        <div class="g-overlay">
+          <span class="g-label">${label}</span>
+          <button class="g-zoom" aria-label="Enlarge photo"><i class="fa fa-expand" aria-hidden="true"></i></button>
+        </div>`;
+      el.querySelector('.g-zoom').addEventListener('click', () => openLightbox(item.src, filtered));
+      galleryGrid.appendChild(el);
+      // Double RAF ensures paint before transition
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.opacity = '1'; el.style.transform = 'scale(1)';
+      }));
+    });
+  }
+  renderGallery('all');
+
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGallery(btn.dataset.filter);
+  }));
+
+  /* ════════════════════════════
+     LIGHTBOX
+  ════════════════════════════ */
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lbImg');
+
+  function openLightbox(src, images) {
+    lbImages = images.map(i => i.src); lbIdx = lbImages.indexOf(src);
+    lbImg.src = src; lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
+  }
+  function closeLightbox() {
+    if (!lightbox.classList.contains('open')) return;
+    lightbox.classList.remove('open');
+    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+  }
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', () => { lbIdx=(lbIdx-1+lbImages.length)%lbImages.length; lbImg.src=lbImages[lbIdx]; });
+  document.getElementById('lbNext').addEventListener('click', () => { lbIdx=(lbIdx+1)%lbImages.length; lbImg.src=lbImages[lbIdx]; });
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  // Touch swipe
+  let lbTx = 0;
+  lightbox.addEventListener('touchstart', e => { lbTx = e.touches[0].clientX; }, { passive:true });
+  lightbox.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - lbTx;
+    if (Math.abs(dx) > 50) { dx < 0 ? document.getElementById('lbNext').click() : document.getElementById('lbPrev').click(); }
+  }, { passive:true });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key==='ArrowLeft')  document.getElementById('lbPrev').click();
+    if (e.key==='ArrowRight') document.getElementById('lbNext').click();
+  });
+
+  /* ════════════════════════════
+     TESTIMONIALS
+  ════════════════════════════ */
+  let currentTestPage = 0;
+  function renderTestimonials(page) {
+    currentTestPage = page;
+    const grid = document.getElementById('testimonialsGrid');
+    const nav  = document.getElementById('testNav');
+    grid.innerHTML = ''; nav.innerHTML = '';
+    const isMobile = window.innerWidth < 768;
+    (isMobile ? [page] : [0,1,2]).forEach((idx, i) => {
+      const col = document.createElement('div');
+      col.className = 'col-md-4 reveal'; col.style.transitionDelay = (i*.15)+'s';
+      col.innerHTML = `<div class="testimonial-card">
+        <div class="t-stars">★★★★★</div>
+        <p>${T[lang]['test'+idx+'_text']}</p>
+        <div class="testimonial-author">
+          <img src="https://i.pravatar.cc/150?img=${[47,44,49][idx]}" class="t-avatar"
+               alt="${T[lang]['test'+idx+'_name']}" loading="lazy" onerror="this.style.display='none'" />
+          <div><div class="t-name">${T[lang]['test'+idx+'_name']}</div>
+               <div class="t-info">${T[lang]['test'+idx+'_info']}</div></div>
+        </div></div>`;
+      grid.appendChild(col);
+    });
+    if (isMobile) {
+      for (let i=0;i<3;i++) {
+        const dot = document.createElement('button');
+        dot.className = 'test-dot'+(i===page?' active':'');
+        dot.setAttribute('aria-label','Testimonial '+(i+1));
+        dot.addEventListener('click', () => renderTestimonials(i));
+        nav.appendChild(dot);
+      }
+    }
+    observeReveal();
+  }
+  renderTestimonials(0);
+
+  /* ════════════════════════════
+     CONTACT FORM
+  ════════════════════════════ */
+  // Set min date = today
+  document.getElementById('evdate').min = new Date().toISOString().split('T')[0];
+
+  // Clear error on input
+  ['fname','lname','email'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      this.classList.remove('error');
+      document.getElementById('fg_'+id).classList.remove('has-error');
+    });
+  });
+
+  function validateField(id, groupId, testFn, errKey) {
+    const el = document.getElementById(id);
+    const fg = document.getElementById(groupId);
+    const valid = testFn(el.value.trim());
+    el.classList.toggle('error', !valid);
+    fg.classList.toggle('has-error', !valid);
+    const em = fg.querySelector('.error-msg');
+    if (em) em.textContent = T[lang][errKey] || '';
+    return valid;
+  }
+
+  function submitForm() {
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const v = [
+      validateField('fname', 'fg_fname', v => v.length>0, 'cf_fname_err'),
+      validateField('lname', 'fg_lname', v => v.length>0, 'cf_lname_err'),
+      validateField('email', 'fg_email', v => emailRx.test(v), 'cf_email_err'),
+    ];
+    if (v.includes(false)) return;
+    document.getElementById('formContent').style.display = 'none';
+    const fs = document.getElementById('formSuccess');
+    fs.style.display = 'block';
+    fs.querySelector('h4').textContent = T[lang]['cf_thanks'];
+    fs.querySelector('p').textContent  = T[lang]['cf_thanks_msg'];
+  }
+
+  /* ════════════════════════════
+     SMOOTH SCROLL
+  ════════════════════════════ */
+  document.addEventListener('click', e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const tgt = document.querySelector(link.getAttribute('href'));
+    if (tgt) { e.preventDefault(); tgt.scrollIntoView({behavior:'smooth',block:'start'}); closeDrawer(); }
+  });
+
+  /* ════════════════════════════
+     RESIZE DEBOUNCE
+  ════════════════════════════ */
+  let resizeT;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => {
+      renderTestimonials(0);
+      if (window.innerWidth > 991) closeDrawer();
+    }, 200);
+  }, { passive:true });
+
+  /* ════════════════════════════
+     INIT
+  ════════════════════════════ */
+  setLang('en');
+  </script>
+</body>
+</html>
